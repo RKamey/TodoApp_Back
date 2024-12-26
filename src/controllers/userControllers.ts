@@ -36,5 +36,25 @@ const getUserById = async (req: Request, res: Response) => {
   }
 }
 
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { id: userId } = req.params;
 
-export const userController = { getAllUsers, getUserById };
+    if (!userId) {
+      return sendResponse(res, 400, "Please provide a valid id", null, true);
+    }
+
+    const userDeleted = await userService.deleteUser(Number(userId));
+
+    if (!userDeleted) {
+      return sendResponse(res, 404, "User not found", null, true);
+    }
+
+    return sendResponse(res, 200, "User deleted succesfully", userDeleted);
+  } catch (error) {
+    return sendResponse(res, 500, "An error occurred while deleting the user", null, true);
+  }
+}
+
+
+export const userController = { getAllUsers, getUserById, deleteUser };

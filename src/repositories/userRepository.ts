@@ -12,4 +12,12 @@ const getUserById = async (userId: number) => {
   })
 }
 
-export const userRepository = { getAllUsers, getUserById };
+const deleteUser = async (userId: number) => {
+  return await prisma.user.delete({
+    where: {
+      id: userId
+    }
+  })
+}
+
+export const userRepository = { getAllUsers, getUserById, deleteUser };
