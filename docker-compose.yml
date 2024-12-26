@@ -3,16 +3,15 @@ services:
     image: mysql:${MYSQL_VERSION} # This define the mysql version to use
     container_name: ${DB_CONTAINER_NAME} # This define the container name
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # This define the root password
-      MYSQL_USER_ROOT: ${MYSQL_USER_ROOT} # This define the root user
-      MYSQL_DATABASE: ${MYSQL_DATABASE} # This define the database name
-      MYSQL_USER: ${MYSQL_USER} # This define the user
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD} # This define the password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # Root password
+      MYSQL_DATABASE: ${MYSQL_DATABASE} # Database name
+      MYSQL_USER: ${MYSQL_USER} # User
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD} # Password
     ports:
-      - "${DB_PORT}:3306" # This define the port to use
+      - "${DB_PORT}:3306" # Port to use
     volumes:
-      - db_data:/var/lib/mysql # This is for persist the data
-    restart: always # This is for restart the container if it fails
+      - db_data:/var/lib/mysql # Persist the data
+    restart: always # Restart the container if it fails
 
 volumes:
   db_data:
