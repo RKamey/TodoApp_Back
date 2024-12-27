@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
-import { sendResponse } from "@utils/sendResponse";
-import { userService} from "@services/userService";
+import { sendResponse } from "@common/utils/sendResponse";
+import { userService} from "features/users/services/userService";
 
 const getAllUsers = async (req: Request, res: Response)=> {
   try {

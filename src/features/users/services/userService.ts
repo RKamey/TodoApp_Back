@@ -1,4 +1,4 @@
-import { userRepository } from "@repositories/userRepository";
+import { userRepository } from "features/users/repositories/userRepository";
 
 const getAllUsers = async () => {
   return await userRepository.getAllUsers();

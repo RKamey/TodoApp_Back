@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
-import healthRoutes from '@routes/healthRoutes';
-import usersRoutes from '@routes/usersRoutes';
+import healthRoutes from 'common/healthcheck/healthcheckRoutes';
+import usersRoutes from 'features/users/routes/usersRoutes';
 
 // ----[ Configurations ]----
 const app = express();

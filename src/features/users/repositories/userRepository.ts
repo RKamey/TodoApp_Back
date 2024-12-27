@@ -1,4 +1,4 @@
-import prisma from "prisma";
+import prisma from "prismaClient";
 
 const getAllUsers = async () => {
   return await prisma.user.findMany();
