@@ -36,6 +36,47 @@ const getUserById = async (req: Request, res: Response) => {
   }
 }
 
+const createUser = async (req: Request, res: Response) => {
+  try {
+    const user = req.body;
+
+    if (!user) {
+      return sendResponse(res, 400, "Invalid user provided", null, true);
+    }
+
+    const createUser = await userService.createUser(user);
+
+    if (!createUser) {
+      return sendResponse(res, 404, "There was an unexpected error", null, true);
+    }
+
+    return sendResponse(res, 201, "User created succesfully!", createUser)
+  } catch (error) {
+    return sendResponse(res, 500, "An error occurred while retrieving the user", null, true);
+  }
+}
+
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const { id: userId } = req.params;
+    const user = req.body;
+
+    if (!userId || !user) {
+      return sendResponse(res, 400, "Please provide a valid id and user", null, true);
+    }
+
+    const userUpdated = await userService.updateUser(Number(userId), user);
+
+    if (!userUpdated) {
+      return sendResponse(res, 404, "User not found", null, true);
+    }
+
+    return sendResponse(res, 200, "User updated succesfully", userUpdated);
+  } catch (error) {
+    return sendResponse(res, 500, "An error occurred while updating the user", null, true);
+  }
+}
+
 const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id: userId } = req.params;
@@ -57,4 +98,4 @@ const deleteUser = async (req: Request, res: Response) => {
 }
 
 
-export const userController = { getAllUsers, getUserById, deleteUser };
+export const userController = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
