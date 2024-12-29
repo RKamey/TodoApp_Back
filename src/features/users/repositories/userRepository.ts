@@ -30,4 +30,17 @@ const deleteUser = async (id: number) => {
   })
 }
 
-export const userRepository = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
+const findUserByEmail = async (email: string): Promise<User | null> => {
+  return await prisma.user.findUnique({
+    where: { email }
+  })
+}
+
+export const userRepository = {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+  findUserByEmail,
+};
