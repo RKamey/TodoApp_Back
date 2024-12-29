@@ -1,5 +1,3 @@
-import type { User } from "./User";
-
 enum ProfileType {
   ADMIN,
   USER

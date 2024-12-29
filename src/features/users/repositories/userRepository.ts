@@ -1,39 +1,32 @@
-import type { CreateUserDTO, UpdateUserDTO } from "@common/dto/user.dto";
-import type { User } from "@common/types/User";
+import type { User, CreateUserDto, UpdateUserDto } from "../types/User";
 import prisma from "prismaClient";
 
 const getAllUsers = async () => {
   return await prisma.user.findMany();
 }
 
-const getUserById = async (userId: number) => {
+const getUserById = async (id: number) => {
   return await prisma.user.findUnique({
-    where: {
-      id: userId
-    }
+    where: { id }
   })
 }
 
-const createUser = async (user: CreateUserDTO): Promise<User> => {
+const createUser = async (data: CreateUserDto): Promise<User> => {
   return await prisma.user.create({
-    data: user
+    data
   });
 }
 
-const updateUser = async (userId: number, user: UpdateUserDTO) => {
+const updateUser = async (id: number, data: UpdateUserDto) => {
   return await prisma.user.update({
-    where: {
-      id: userId
-    },
-    data: user
+    where: { id },
+    data
   })
 }
 
-const deleteUser = async (userId: number) => {
+const deleteUser = async (id: number) => {
   return await prisma.user.delete({
-    where: {
-      id: userId
-    }
+    where: { id }
   })
 }
 
