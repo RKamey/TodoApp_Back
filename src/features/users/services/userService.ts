@@ -1,4 +1,4 @@
-import type { User } from "@common/types/User";
+import type { CreateUserDto, UpdateUserDto, User } from "../types/User";
 import { hash } from "bcryptjs";
 import { userRepository } from "features/users/repositories/userRepository";
 
@@ -10,13 +10,12 @@ const getUserById = async (id: number) => {
   return await userRepository.getUserById(id);
 }
 
-const createUser = async (user: User) => {
+const createUser = async (user: CreateUserDto) => {
   try {
     const hashedPassword = await hash(user.password, 10);
 
     return await userRepository.createUser({
       ...user,
-      name: user.name ?? undefined,
       password: hashedPassword
     });
     
@@ -25,17 +24,14 @@ const createUser = async (user: User) => {
   }
 }
 
-const updateUser = async (id: number, user: User) => {
+const updateUser = async (id: number, user: UpdateUserDto) => {
   const userFound = await getUserById(id);
 
   if (!userFound) {
     return null;
   }
 
-  return await userRepository.updateUser(id, {
-    ...user,
-    name: user.name ?? undefined
-  });
+  return await userRepository.updateUser(id, user);
 }
 
 
