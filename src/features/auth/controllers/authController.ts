@@ -19,5 +19,21 @@ const login = async (req: Request, res: Response) => {
   }
 }
 
+const register = async (req: Request, res: Response) => {
+  try {
+    const user = req.body;
+      
+    if (!user) {
+      return sendResponse(res, 400, "Invalid user provided", null, true);
+    }
+    
+    const registerData = await authService.register(user);
 
-export const authController = { login };
+    return sendResponse(res, 200, "User registered succesfully!", registerData);
+  }
+  catch (error) {
+      return sendResponse(res, 500, "An error occurred while registering the user", null, true);
+  }
+}
+
+export const authController = { login, register };
