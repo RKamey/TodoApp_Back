@@ -1,5 +1,5 @@
-import { generateToken } from "@common/utils/jwtHelper";
 import { compare, hash } from "bcryptjs";
+import { generateToken } from "@common/utils/jwtHelper";
 import { userRepository } from "features/users/repositories/userRepository";
 import type { LoginDto, RegisterDto } from "../types/Auth";
 
@@ -27,14 +27,15 @@ const login = async (user: LoginDto) => {
 }
 
 const register = async (user: RegisterDto) => {
+  const { email, password } = user;
 
-  const existingUser = await userRepository.findUserByEmail(user.email);
+  const existingUser = await userRepository.findUserByEmail(email);
 
   if (existingUser) {
     throw new Error('User already exists');
   }
 
-  const hashedPassword = await hash(user.password, 10);
+  const hashedPassword = await hash(password, 10);
 
   const newUser = await userRepository.createUser({
     ...user,
