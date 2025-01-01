@@ -11,11 +11,13 @@ const app = express();
 // ----[ Middlewares ]----
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(verifyToken);
 
-// ----[ Routes ]----
+// ----[ Public Routes ]----
 app.use('/health', healthRoutes);
-app.use('/users', usersRoutes);
 app.use('/auth', authRoutes);
+
+// ----[ Protected Routes ]----
+app.use(verifyToken);
+app.use('/users', usersRoutes);
 
 export default app;
