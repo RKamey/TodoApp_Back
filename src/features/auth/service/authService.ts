@@ -18,6 +18,7 @@ const login = async (user: LoginDto) => {
   }
 
   const token = generateToken({
+    id: existingUser.id,
     email: existingUser.email,
     name: existingUser.name,
     role: existingUser.profile,

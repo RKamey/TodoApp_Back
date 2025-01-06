@@ -12,3 +12,10 @@ export interface Task {
   due_date: Date;
   user_id: number;
 }
+
+export interface CreateTaskDto {
+  title: string;
+  description: string;
+  due_date: Date;
+  user_id: number;
+}
