@@ -3,6 +3,17 @@ import { taskRepository } from "../repositories/taskRepository";
 import { sendResponse } from "@common/utils/sendResponse";
 import { getAttributeFromToken } from "@common/utils/jwtHelper";
 import jwt from "jsonwebtoken";
+import { TaskService } from "../services/taskService";
+
+export const getAllTasks = async (req: Request, res: Response) => {
+  try {
+    const userId = req.body.userId;
+    const tasks = await TaskService.getTaskByUser(userId);
+    return sendResponse(res, 200, "Tasks fetched successfully", tasks);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching tasks", error });
+  }
+};
 
 const createTask = async (req: Request, res: Response) => {
   try {
@@ -17,7 +28,7 @@ const createTask = async (req: Request, res: Response) => {
 
     const due_Date = new Date(due_date);
 
-    const task = await taskRepository.createTask({ title, description, due_date: due_Date, user_id });
+    const task = await TaskService.createTask({ title, description, due_date: due_Date, user_id });
 
     return sendResponse(res, 200, "Task created successfully", task);
   } catch (error) {
@@ -30,5 +41,6 @@ const createTask = async (req: Request, res: Response) => {
 };
 
 export const TaskController = {
+  getAllTasks,
   createTask,
 };

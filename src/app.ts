@@ -6,7 +6,7 @@ import usersRoutes from 'features/users/routes/usersRoutes';
 import authRoutes from 'features/auth/routes/authRoutes';
 import taskRoutes from 'features/tasks/routes/taskRoutes';
 // ===== Middlewares =====
-import verifyToken from '@common/middleware/verifyToken';
+import { verifyToken, validateToken } from '@common/middleware/authMiddleware';
 
 // ----[ Configurations ]----
 const app = express();
@@ -22,6 +22,6 @@ app.use('/auth', authRoutes);
 // ----[ Protected Routes ]----
 app.use(verifyToken);
 app.use('/users', usersRoutes);
-app.use('/tasks', taskRoutes);
+app.use('/tasks', validateToken, taskRoutes);
 
 export default app;
