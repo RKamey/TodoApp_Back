@@ -16,6 +16,17 @@ export const getAllTasks = async (req: Request, res: Response) => {
   }
 };
 
+export const getTaskById = async (req: Request, res: Response) => {
+  try {
+    const taskId = req.params.id;
+    const task = await TaskService.getTaskById(Number(taskId));
+
+    return sendResponse(res, 200, "Task fetched successfully", task);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching task", error });
+  }
+}
+
 const createTask = async (req: Request, res: Response) => {
   try {
     const { title, description, due_date } = req.body;
@@ -107,6 +118,7 @@ const deleteTask = async (req: Request, res: Response) => {
 
 export const TaskController = {
   getAllTasks,
+  getTaskById,
   createTask,
   updateTask,
   deleteTask,

@@ -5,6 +5,10 @@ const getTaskByUser = async (userId: number) => {
   return await taskRepository.getTasksByUserId(userId);
 }
 
+const getTaskById = async (taskId: number) => {
+  return await taskRepository.getTaskById(taskId);
+}
+
 const createTask = async (task: CreateTaskDto) => {
   return await taskRepository.createTask(task);
 }
@@ -17,4 +21,4 @@ const deleteTask = async (taskId: number) => {
   return await taskRepository.deleteTask(taskId);
 }
 
-export const TaskService = { getTaskByUser, createTask, updateTask, deleteTask };
+export const TaskService = { getTaskByUser, getTaskById, createTask, updateTask, deleteTask };

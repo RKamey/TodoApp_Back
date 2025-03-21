@@ -16,6 +16,21 @@ const getTasksByUserId = async (userId: number) => {
   }
 }
 
+const getTaskById = async (id: number) => {
+  try {
+    const task = await prisma.task.findUnique({
+      where: {
+        id
+      }
+    });
+    console.log(task);
+    return task;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 const createTask = async (task: CreateTaskDto) => {
   try {
     const newTask = await prisma.task.create({
@@ -62,6 +77,7 @@ const deleteTask = async (id: number) => {
 
 export const taskRepository = {
   getTasksByUserId,
+  getTaskById,
   createTask,
   updateTask,
   deleteTask
