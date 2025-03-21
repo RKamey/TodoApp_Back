@@ -19,3 +19,5 @@ export interface CreateTaskDto {
   due_date: Date;
   user_id: number;
 }
+
+export type UpdateTaskDto = Partial<CreateTaskDto>
