@@ -58,12 +58,19 @@ const updateTask = async (req: Request, res: Response) => {
       return sendResponse(res, 401, "Unauthorized", "User not found");
     }
 
-    const due_Date = new Date(due_date);
+    const updateData: Partial<{
+      title: string;
+      description: string;
+      due_date: Date;
+      user_id: number;
+    }> = {};
 
-    const task = await TaskService.updateTask(
-      { title, description, due_date: due_Date, user_id },
-      task_id
-    );
+    if (title !== undefined) updateData.title = title;
+    if (description !== undefined) updateData.description = description;
+    if (due_date !== undefined) updateData.due_date = new Date(due_date);
+    updateData.user_id = user_id;
+
+    const task = await TaskService.updateTask(updateData, task_id);
 
     return sendResponse(res, 200, "Task updated successfully", task);
   } catch (error) {
