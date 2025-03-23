@@ -39,9 +39,9 @@ model Profile {
   id Int @id @default(autoincrement())
   user_id Int @unique
   user User @relation(fields: [user_id], references: [id])
-  bio String?
-  avatar_url String?
-  profile_type ProfileType
+  bio String? @default ("")
+  avatar_url String? @default ("")
+  profile_type ProfileType @default(USER)
 }
 
 model Task {

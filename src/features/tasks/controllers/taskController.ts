@@ -1,5 +1,4 @@
 import type { Request, Response } from "express";
-import { taskRepository } from "../repositories/taskRepository";
 import { sendResponse } from "@common/utils/sendResponse";
 import { getAttributeFromToken } from "@common/utils/jwtHelper";
 import jwt from "jsonwebtoken";

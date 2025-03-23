@@ -5,6 +5,7 @@ import healthRoutes from 'common/healthcheck/healthcheckRoutes';
 import usersRoutes from 'features/users/routes/usersRoutes';
 import authRoutes from 'features/auth/routes/authRoutes';
 import taskRoutes from 'features/tasks/routes/taskRoutes';
+import profilesRoutes from 'features/profiles/routes/profilesRoutes';
 // ===== Middlewares =====
 import { verifyToken, validateToken } from '@common/middleware/authMiddleware';
 
@@ -23,5 +24,6 @@ app.use('/auth', authRoutes);
 app.use(verifyToken);
 app.use('/users', usersRoutes);
 app.use('/tasks', validateToken, taskRoutes);
+app.use('/profiles', validateToken, profilesRoutes);
 
 export default app;
