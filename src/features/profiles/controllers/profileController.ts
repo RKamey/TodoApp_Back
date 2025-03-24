@@ -6,10 +6,10 @@ import { profileService } from "../services/profileService";
 
 const getProfileByUserId = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.slice(7);
-    const user_id = Number(getAttributeFromToken(token as string, "id"));
+    
+    const user_id = req.user?.id;
 
-    if (isNaN(user_id)) {
+    if (!user_id) {
       return sendResponse(res, 401, "Unauthorized", "User not found");
     }
 
@@ -27,10 +27,10 @@ const getProfileByUserId = async (req: Request, res: Response) => {
 
 const createProfile = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.slice(7);
-    const user_id = Number(getAttributeFromToken(token as string, "id"));
+    
+    const user_id = req.user?.id;
 
-    if (isNaN(user_id)) {
+    if (!user_id) {
       return sendResponse(res, 401, "Unauthorized", "User not found");
     }
 
@@ -48,10 +48,10 @@ const createProfile = async (req: Request, res: Response) => {
 
 const updateProfile = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.slice(7);
-    const user_id = Number(getAttributeFromToken(token as string, "id"));
+    
+    const user_id = req.user?.id;
 
-    if (isNaN(user_id)) {
+    if (!user_id) {
       return sendResponse(res, 401, "Unauthorized", "User not found");
     }
 
@@ -69,10 +69,10 @@ const updateProfile = async (req: Request, res: Response) => {
 
 const deleteProfile = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.slice(7);
-    const user_id = Number(getAttributeFromToken(token as string, "id"));
+    
+    const user_id = req.user?.id;
 
-    if (isNaN(user_id)) {
+    if (!user_id) {
       return sendResponse(res, 401, "Unauthorized", "User not found");
     }
 

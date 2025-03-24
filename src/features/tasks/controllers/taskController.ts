@@ -6,9 +6,13 @@ import { TaskService } from "../services/taskService";
 
 export const getAllTasks = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.userId;
-    const tasks = await TaskService.getTaskByUser(userId);
+    const user_id = req.user?.id;
 
+    if (!user_id) {
+      return sendResponse(res, 401, "Unauthorized", "User not found");
+    }
+
+    const tasks = await TaskService.getTaskByUser(user_id);
     return sendResponse(res, 200, "Tasks fetched successfully", tasks);
   } catch (error) {
     res.status(500).json({ message: "Error fetching tasks", error });
@@ -17,25 +21,34 @@ export const getAllTasks = async (req: Request, res: Response) => {
 
 export const getTaskById = async (req: Request, res: Response) => {
   try {
-    const taskId = req.params.id;
-    const task = await TaskService.getTaskById(Number(taskId));
+    const user_id = req.user?.id;
+
+    if (!user_id) {
+      return sendResponse(res, 401, "Unauthorized", "User not found");
+    }
+
+    const taskId = Number(req.params.id);
+    const task = await TaskService.getTaskById(taskId);
+
+    if (task?.user_id !== user_id) {
+      return sendResponse(res, 403, "Forbidden", "Access denied");
+    }
 
     return sendResponse(res, 200, "Task fetched successfully", task);
   } catch (error) {
     res.status(500).json({ message: "Error fetching task", error });
   }
-}
+};
 
 const createTask = async (req: Request, res: Response) => {
   try {
-    const { title, description, due_date } = req.body;
-    const token = req.headers.authorization?.slice(7);
+    const user_id = req.user?.id;
 
-    const user_id = Number(getAttributeFromToken(token as string, "id"));
-
-    if (isNaN(user_id)) {
+    if (!user_id) {
       return sendResponse(res, 401, "Unauthorized", "User not found");
     }
+
+    const { title, description, due_date } = req.body;
 
     const due_Date = new Date(due_date);
 
@@ -58,31 +71,34 @@ const createTask = async (req: Request, res: Response) => {
 
 const updateTask = async (req: Request, res: Response) => {
   try {
-    const { title, description, due_date } = req.body;
-    const token = req.headers.authorization?.slice(7);
-    const task_id = Number(req.params.id);
 
-    const user_id = Number(getAttributeFromToken(token as string, "id"));
+    const user_id = req.user?.id;
 
-    if (isNaN(user_id)) {
+    if (!user_id) {
       return sendResponse(res, 401, "Unauthorized", "User not found");
     }
 
+    const task_id = Number(req.params.id);
+    const task = await TaskService.getTaskById(task_id);
+
+    // Validar la propiedad de la tarea
+    if (!task || task.user_id !== user_id) {
+      return sendResponse(res, 403, "Forbidden", "Access denied");
+    }
+
+    const { title, description, due_date } = req.body;
     const updateData: Partial<{
       title: string;
       description: string;
       due_date: Date;
-      user_id: number;
     }> = {};
 
     if (title !== undefined) updateData.title = title;
     if (description !== undefined) updateData.description = description;
     if (due_date !== undefined) updateData.due_date = new Date(due_date);
-    updateData.user_id = user_id;
 
-    const task = await TaskService.updateTask(updateData, task_id);
-
-    return sendResponse(res, 200, "Task updated successfully", task);
+    const updatedTask = await TaskService.updateTask(updateData, task_id);
+    return sendResponse(res, 200, "Task updated successfully", updatedTask);
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
       return sendResponse(res, 401, "Unauthorized", "Invalid token");
@@ -94,18 +110,21 @@ const updateTask = async (req: Request, res: Response) => {
 
 const deleteTask = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization?.slice(7);
-    const task_id = Number(req.params.id);
 
-    const user_id = Number(getAttributeFromToken(token as string, "id"));
-
-    if (isNaN(user_id)) {
+    const user_id = req.user?.id;
+    if (!user_id) {
       return sendResponse(res, 401, "Unauthorized", "User not found");
     }
 
-    const task = await TaskService.deleteTask(task_id);
+    const task_id = Number(req.params.id);
+    const task = await TaskService.getTaskById(task_id);
 
-    return sendResponse(res, 200, "Task deleted successfully", task);
+    if (!task || task.user_id !== user_id) {
+      return sendResponse(res, 403, "Forbidden", "Access denied");
+    }
+
+    const deletedTask = await TaskService.deleteTask(task_id);
+    return sendResponse(res, 200, "Task deleted successfully", deletedTask);
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
       return sendResponse(res, 401, "Unauthorized", "Invalid token");
@@ -113,7 +132,7 @@ const deleteTask = async (req: Request, res: Response) => {
       return sendResponse(res, 500, "Error deleting task", error);
     }
   }
-}
+};
 
 export const TaskController = {
   getAllTasks,
