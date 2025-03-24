@@ -36,6 +36,39 @@ const getUserById = async (req: Request, res: Response) => {
   }
 }
 
+const getMe = async (req: Request, res: Response) => {
+  try {
+    const user_id = req.user?.id;
+
+    if (!user_id) {
+      return sendResponse(res, 404, "User not found", null, true);
+    }
+
+    const userProfile = await userService.getMe(user_id);
+
+    return sendResponse(res, 200, "User found", userProfile);
+  } catch (error) {
+    return sendResponse(res, 500, "An error occurred while retrieving the user", null, true);
+  }
+};
+
+
+const getMeFull = async (req: Request, res: Response) => {
+  try {
+    const user_id = req.user?.id;
+
+    if (!user_id) {
+      return sendResponse(res, 404, "User not found", null, true);
+    }
+
+    const userProfile = await userService.getMeFull(user_id);
+
+    return sendResponse(res, 200, "User found", userProfile);
+  } catch (error) {
+    return sendResponse(res, 500, "An error occurred while retrieving the user", null, true);
+  }
+}
+
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body;
@@ -98,4 +131,4 @@ const deleteUser = async (req: Request, res: Response) => {
 }
 
 
-export const userController = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
+export const userController = { getAllUsers, getUserById, getMe, getMeFull, createUser, updateUser, deleteUser };

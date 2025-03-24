@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/:id", ProfileController.getProfileByUserId);
 router.post("/", ProfileController.createProfile);
-router.patch("/:id", ProfileController.updateProfile);
-router.delete("/:id", ProfileController.deleteProfile);
+router.patch("/", ProfileController.updateProfile);
+router.delete("/", ProfileController.deleteProfile);
 
 export default router;

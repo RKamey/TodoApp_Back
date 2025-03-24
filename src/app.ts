@@ -22,7 +22,7 @@ app.use('/auth', authRoutes);
 
 // ----[ Protected Routes ]----
 app.use(verifyToken);
-app.use('/users', usersRoutes);
+app.use('/users', validateToken, usersRoutes);
 app.use('/tasks', validateToken, taskRoutes);
 app.use('/profiles', validateToken, profilesRoutes);
 

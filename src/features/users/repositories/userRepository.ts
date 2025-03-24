@@ -11,6 +11,26 @@ const getUserById = async (id: number) => {
   })
 }
 
+const getMe = async (id: number) => {
+  return await prisma.user.findUnique({
+    where: { id },
+    include: {
+      profile: true
+    }
+  });
+};
+
+
+const getMeFull = async (id: number) => {
+  return await prisma.user.findUnique({
+    where: { id },
+    include: {
+      profile: true,
+      tasks: true
+    }
+  });
+}
+
 const createUser = async (data: CreateUserDto): Promise<User> => {
   return await prisma.user.create({
     data
@@ -39,6 +59,8 @@ const findUserByEmail = async (email: string): Promise<User | null> => {
 export const userRepository = {
   getAllUsers,
   getUserById,
+  getMe,
+  getMeFull,
   createUser,
   updateUser,
   deleteUser,

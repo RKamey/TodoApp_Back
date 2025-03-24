@@ -10,6 +10,14 @@ const getUserById = async (id: number) => {
   return await userRepository.getUserById(id);
 }
 
+const getMe = async (id: number) => {
+  return await userRepository.getMe(id);
+}
+
+const getMeFull = async (id: number) => {
+  return await userRepository.getMeFull(id);
+}
+
 const createUser = async (user: CreateUserDto) => {
   try {
     const hashedPassword = await hash(user.password, 10);
@@ -46,4 +54,4 @@ const deleteUser = async (id: number) => {
   return true;
 }
 
-export const userService = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
+export const userService = { getAllUsers, getUserById, getMe, getMeFull, createUser, updateUser, deleteUser };

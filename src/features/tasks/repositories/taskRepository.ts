@@ -23,7 +23,6 @@ const getTaskById = async (id: number) => {
         id
       }
     });
-    console.log(task);
     return task;
   } catch (error) {
     console.log(error);
@@ -36,7 +35,6 @@ const createTask = async (task: CreateTaskDto) => {
     const newTask = await prisma.task.create({
       data: task
     })
-    console.log(newTask);
     return newTask;
   } catch (error) {
     console.log(error);
@@ -52,7 +50,6 @@ const updateTask = async (task: UpdateTaskDto, id: number) => {
       },
       data: task
     });
-    console.log(updatedTask);
     return updatedTask;
   } catch (error) {
     console.log(error);
@@ -67,7 +64,6 @@ const deleteTask = async (id: number) => {
         id
       }
     })
-    console.log(deleteTask);
     return deleteTask;
   } catch (error) {
     console.log(error);
