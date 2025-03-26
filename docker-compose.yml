@@ -1,14 +1,12 @@
 services:
   db:
-    image: mysql:${MYSQL_VERSION} # This define the mysql version to use
+    image: postgres
     container_name: ${DB_CONTAINER_NAME} # This define the container name
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # Root password
-      MYSQL_DATABASE: ${MYSQL_DATABASE} # Database name
-      #MYSQL_USER: ${MYSQL_USER} # User
-      #MYSQL_PASSWORD: ${MYSQL_PASSWORD} # Password
+      POSTGRES_PASSWORD: ${DB_PASSWORD} # Password to use
+      POSTGRES_USER: ${DB_USER} # User to use
     ports:
-      - "${DB_PORT}:3306" # Port to use
+      - "${DB_PORT}:5432" # Port to use
     volumes:
       - db_data:/var/lib/mysql # Persist the data
     restart: always # Restart the container if it fails
