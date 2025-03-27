@@ -1,6 +1,6 @@
 {
   "name": "back_todoapp",
-  "module": "app.ts",
+  "module": "server.ts",
   "type": "module",
   "scripts": {
     "dev": "nodemon --exec bun src/server.ts",
