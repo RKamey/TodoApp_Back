@@ -4,8 +4,6 @@ FROM node:${NODE_VERSION}-alpine
 
 ENV NODE_ENV=production
 
-WORKDIR /src
-
 COPY package*.json ./
 
 RUN npm install
