@@ -2,7 +2,7 @@ ARG NODE_VERSION=23.10
 
 FROM node:${NODE_VERSION}-alpine
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 WORKDIR /src
 
