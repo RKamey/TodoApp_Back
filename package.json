@@ -1,14 +1,12 @@
 {
   "name": "back_todoapp",
-  "module": "index.ts",
+  "module": "app.ts",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
+    "dev": "nodemon --exec bun src/server.ts",
+    "start": "node server",
     "migrate": "npx prisma migrate dev",
-    "migrate:prod": "npx prisma migrate deploy",
-    "seed": "ts-node prisma/seed.ts",
+    "seed": "bun prisma/seed.ts",
     "prisma": "npx prisma"
   },
   "devDependencies": {
