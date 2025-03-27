@@ -1,6 +1,6 @@
 import prisma from "prismaClient";
 import type { CreateProfile } from "../types/Profile";
-import type { Prisma, ProfileType } from "@prisma/client";
+import type { Profile } from "../types/Profile";
 
 const getProfileByUserId = async (userId: number) => {
   try {
@@ -21,8 +21,7 @@ const createProfile = async (userId: number, profile: CreateProfile) => {
     const newProfile = await prisma.profile.create({
       data: {
         user_id: userId,
-        ...profile,
-        profile_type: profile.profile_type as unknown as ProfileType
+        ...profile,       
       }
     });
 
@@ -40,8 +39,7 @@ const updateProfile = async (userId: number, profile: CreateProfile) => {
         user_id: userId
       },
       data: {
-        ...profile,
-        profile_type: profile.profile_type as unknown as ProfileType
+        ...profile
       }
     });
 
