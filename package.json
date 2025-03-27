@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon --exec bun src/server.ts",
-    "start": "node dist/server.js",
+    "start": "node src/server.ts",
     "build": "tsc",
     "migrate": "npx prisma migrate dev",
     "seed": "bun prisma/seed.ts",
