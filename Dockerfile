@@ -1,17 +1,13 @@
-ARG NODE_VERSION=23.10
+FROM oven/bun:latest
 
-FROM node:${NODE_VERSION}-alpine
-
-ENV NODE_ENV=production
-
-COPY package*.json ./
-
-RUN npm install
+WORKDIR /app
 
 COPY . .
 
-RUN npm run build
+RUN bun install --production
+
+RUN bun run build
 
 EXPOSE 4006
 
-CMD ["npm", "run", "start"]
+CMD ["bun", "run", "start"]
