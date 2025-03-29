@@ -3,11 +3,11 @@
   "module": "server.ts",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --exec bun src/server.ts",
-    "start": "node src/server.ts",
+    "dev": "nodemon --exec bun src/server",
+    "start": "bun src/server",
     "build": "tsc",
     "migrate": "npx prisma migrate dev",
-    "seed": "bun prisma/seed.ts",
+    "seed": "bun prisma/seed",
     "prisma": "npx prisma"
   },
   "devDependencies": {
