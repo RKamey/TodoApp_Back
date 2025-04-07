@@ -29,6 +29,8 @@ app.use(cors(options));
 app.use(morgan('dev'));
 app.use(express.json());
 
+app.options('*', cors(options));
+
 // ----[ Public Routes ]----
 app.use('/health', healthRoutes);
 app.use('/auth', authRoutes);
