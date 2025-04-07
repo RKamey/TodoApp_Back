@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import morgan from 'morgan';
 // ===== Routes =====
 import healthRoutes from 'common/healthcheck/healthcheckRoutes';
@@ -12,7 +13,19 @@ import { verifyToken, validateToken } from '@common/middleware/authMiddleware';
 // ----[ Configurations ]----
 const app = express();
 
+// ----[ Allowed Origins ]----
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://rkamey-taskify.netlify.app',
+]
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins,
+}
+
 // ----[ Middlewares ]----
+app.use(cors(options));
 app.use(morgan('dev'));
 app.use(express.json());
 
