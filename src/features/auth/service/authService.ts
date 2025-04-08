@@ -51,6 +51,8 @@ const register = async (user: RegisterDto) => {
     role: newUser.profile ?? undefined,
   });
 
+  console.log(token);
+
   return { token };
 }
 
