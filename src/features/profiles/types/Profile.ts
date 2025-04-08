@@ -9,6 +9,7 @@ export interface Profile {
 }
 
 export interface CreateProfile {
+  name: string;
   bio: string;
   avatar_url: string;
   profile_type: ProfileType;  

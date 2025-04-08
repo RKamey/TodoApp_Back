@@ -21,16 +21,27 @@ const createProfile = async (userId: number, profile: CreateProfile) => {
     const newProfile = await prisma.profile.create({
       data: {
         user_id: userId,
-        ...profile,       
-      }
+        ...profile,
+      },
     });
 
+    if (profile.name) {
+      await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          name: profile.name,
+        },
+      });
+    }
+
     return newProfile;
-  } catch ( error ) {
+  } catch (error) {
     console.log(error);
     throw error;
   }
-}
+};
 
 const updateProfile = async (userId: number, profile: CreateProfile) => {
   try {
