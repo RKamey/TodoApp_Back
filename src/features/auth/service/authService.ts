@@ -44,7 +44,14 @@ const register = async (user: RegisterDto) => {
     name: user.name,
   });
 
-  return newUser;
+  const token = generateToken({
+    id: newUser.id,
+    email: newUser.email,
+    name: newUser.name ?? '',
+    role: newUser.profile ?? undefined,
+  });
+
+  return { token };
 }
 
 export const authService = { login, register};
