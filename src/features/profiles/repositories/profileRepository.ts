@@ -1,6 +1,5 @@
 import prisma from "prismaClient";
 import type { CreateProfile } from "../types/Profile";
-import type { Profile } from "../types/Profile";
 
 const getProfileByUserId = async (userId: number) => {
   try {
@@ -18,20 +17,23 @@ const getProfileByUserId = async (userId: number) => {
 
 const createProfile = async (userId: number, profile: CreateProfile) => {
   try {
+    const { name, ...profileData } = profile;
+
     const newProfile = await prisma.profile.create({
       data: {
         user_id: userId,
-        ...profile,
+        ...profileData,
       },
     });
 
-    if (profile.name) {
+    if (name) {
       await prisma.user.update({
         where: {
           id: userId,
         },
         data: {
-          name: profile.name,
+          name: name,
+          isProfileComplete: true,
         },
       });
     }
