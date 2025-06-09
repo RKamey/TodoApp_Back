@@ -67,6 +67,25 @@ const updateProfile = async (req: Request, res: Response) => {
   }
 }
 
+const updateProfileAvatar = async (req: Request, res: Response) => {
+  try {
+
+    const user_id = req.user?.id;
+
+    if (!user_id) {
+      return sendResponse(res, 401, "Unauthorized", "User not found");
+    }
+
+    await profileService.updateProfileAvatar(user_id, req.body);
+  } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      return sendResponse(res, 401, "Unauthorized", "Invalid token");
+    } else {
+      return sendResponse(res, 500, "Error updating profile avatar", error);
+    }
+  }
+}
+
 const deleteProfile = async (req: Request, res: Response) => {
   try {
     
@@ -92,5 +111,6 @@ export const ProfileController = {
   getProfileByUserId,
   createProfile,
   updateProfile,
+  updateProfileAvatar,
   deleteProfile,
 }
