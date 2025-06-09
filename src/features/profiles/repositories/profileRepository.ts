@@ -47,14 +47,28 @@ const createProfile = async (userId: number, profile: CreateProfile) => {
 
 const updateProfile = async (userId: number, profile: CreateProfile) => {
   try {
+    const { name, ...profileData } = profile;
+
     const updatedProfile = await prisma.profile.update({
       where: {
         user_id: userId
       },
       data: {
-        ...profile
+        ...profileData
       }
     });
+
+    if (name) {
+      await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          name: name,
+          isProfileComplete: true,
+        },
+      });
+    }
 
     return updatedProfile;
   } catch (error) {
