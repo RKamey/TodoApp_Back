@@ -69,22 +69,31 @@ const updateProfile = async (req: Request, res: Response) => {
 
 const updateProfileAvatar = async (req: Request, res: Response) => {
   try {
+    const userId = req.user?.id;
 
-    const user_id = req.user?.id;
-
-    if (!user_id) {
+    if (!userId) {
       return sendResponse(res, 401, "Unauthorized", "User not found");
     }
 
-    await profileService.updateProfileAvatar(user_id, req.body);
+    const { avatar_url } = req.body;
+
+    if (!avatar_url || typeof avatar_url !== "string") {
+      return sendResponse(res, 400, "Invalid payload", "avatar_url is required and must be a string");
+    }
+
+    const updatedProfile = await profileService.updateProfileAvatar(userId, avatar_url);
+
+    return sendResponse(res, 200, "Avatar updated", updatedProfile);
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
       return sendResponse(res, 401, "Unauthorized", "Invalid token");
-    } else {
-      return sendResponse(res, 500, "Error updating profile avatar", error);
     }
+
+    console.error("Error updating avatar:", error);
+    return sendResponse(res, 500, "Server Error", "Failed to update avatar");
   }
-}
+};
+
 
 const deleteProfile = async (req: Request, res: Response) => {
   try {

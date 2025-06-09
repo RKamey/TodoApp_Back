@@ -13,8 +13,8 @@ const updateProfile = (userId: number, profile: CreateProfile) => {
   return profileRepository.updateProfile(userId, profile);
 }
 
-const updateProfileAvatar = (userId: number, avatar: string) => {
-  return profileRepository.updateProfileAvatar(userId, avatar);
+const updateProfileAvatar = (userId: number, avatarUrl: string) => {
+  return profileRepository.updateProfileAvatar(userId, avatarUrl);
 }
 
 const deleteProfile = (userId: number) => {

@@ -77,23 +77,12 @@ const updateProfile = async (userId: number, profile: CreateProfile) => {
   }
 }
 
-const updateProfileAvatar = async (userId: number, avatar: string) => {
-  try {
-    const updatedProfile = await prisma.profile.update({
-      where: {
-        user_id: userId
-      },
-      data: {
-        avatar_url: avatar
-      }
-    });
-
-    return updatedProfile;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-}
+const updateProfileAvatar = async (userId: number, avatarUrl: string) => {
+  return await prisma.profile.update({
+    where: { user_id: userId },
+    data: { avatar_url: avatarUrl },
+  });
+};
 
 const deleteProfile = async (userId: number) => {
   try {
