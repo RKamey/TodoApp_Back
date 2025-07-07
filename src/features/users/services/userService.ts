@@ -26,7 +26,7 @@ const createUser = async (user: CreateUserDto) => {
       ...user,
       password: hashedPassword
     });
-    
+
   } catch {
     throw new Error("Error creating user");
   }
@@ -45,7 +45,7 @@ const updateUser = async (id: number, user: UpdateUserDto) => {
 
 const deleteUser = async (id: number) => {
   const userFound = await getUserById(id);
-  
+
   if (!userFound) {
     return null;
   }

@@ -4,12 +4,12 @@ import { userService} from "features/users/services/userService";
 
 const getAllUsers = async (req: Request, res: Response)=> {
   try {
-    const allUsers = await userService.getAllUsers(); 
-    
+    const allUsers = await userService.getAllUsers();
+
     if (!allUsers || allUsers.length === 0) {
       return sendResponse(res, 404, "No users found", null, true);
     }
-    
+
     return sendResponse(res, 200, "Users found", allUsers);
   } catch (error) {
     return sendResponse(res, 500, "An error occurred while retrieving users", null, true)
