@@ -8,6 +8,7 @@ import authRoutes from 'features/auth/routes/authRoutes';
 import taskRoutes from 'features/tasks/routes/taskRoutes';
 import profilesRoutes from 'features/profiles/routes/profilesRoutes';
 import chatbotRoutes from 'features/chatbot/routes/chatbotRoutes';
+import weatherRoutes from 'features/weather/routes/weatherRoutes';
 // ===== Middlewares =====
 import { verifyToken, validateToken } from '@common/middleware/authMiddleware';
 
@@ -42,6 +43,6 @@ app.use('/users', validateToken, usersRoutes);
 app.use('/tasks', validateToken, taskRoutes);
 app.use('/profiles', validateToken, profilesRoutes);
 app.use('/chatbot', validateToken, chatbotRoutes);
-
+app.use('/weather', validateToken, weatherRoutes);
 
 export default app;
