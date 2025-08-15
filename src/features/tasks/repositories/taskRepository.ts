@@ -1,5 +1,6 @@
 import prisma from "prismaClient";
 import type { CreateTaskDto, UpdateTaskDto } from "../types/Task";
+import type { TaskStatus } from "@prisma/client";
 
 const getTasksByUserId = async (userId: number) => {
   try {
@@ -71,10 +72,29 @@ const deleteTask = async (id: number) => {
   }
 }
 
+const updateTaskStatus = async (id: number, status: TaskStatus) => {
+  try {
+    const completeTask = await prisma.task.update({
+      where: {
+        id
+      },
+      data: {
+        status
+      }
+    });
+
+    return completeTask;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export const taskRepository = {
   getTasksByUserId,
   getTaskById,
   createTask,
   updateTask,
-  deleteTask
-}
+  deleteTask,
+  updateTaskStatus
+};

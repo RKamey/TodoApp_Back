@@ -134,10 +134,38 @@ const deleteTask = async (req: Request, res: Response) => {
   }
 };
 
+const updateTaskStatus = async (req: Request, res: Response) => {
+  try {
+    const user_id = req.user?.id;
+
+    if (!user_id) {
+      return sendResponse(res, 401, "Unauthorized", "User not found");
+    }
+
+    const task_id = Number(req.params.id);
+
+    const task = await TaskService.getTaskById(task_id);
+
+    if (!task || task.user_id !== user_id) {
+      return sendResponse(res, 403, "Forbidden", "Access denied");
+    }
+
+    const completedTask = await TaskService.updateTaskStatus(task_id, task.status);
+    return sendResponse(res, 200, "Task completed successfully", completedTask);
+  } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      return sendResponse(res, 401, "Unauthorized", "Invalid token");
+    } else {
+      return sendResponse(res, 500, "Error completing task", error);
+    }
+  }
+}
+
 export const TaskController = {
   getAllTasks,
   getTaskById,
   createTask,
   updateTask,
   deleteTask,
+  updateTaskStatus,
 };
