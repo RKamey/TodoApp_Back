@@ -3,7 +3,7 @@
   "module": "server.ts",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --exec bun src/server",
+    "dev": "nodemon --watch src --exec bun src/server",
     "start": "bun src/server",
     "build": "tsc",
     "migrate": "npx prisma migrate dev",
@@ -21,6 +21,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "@getbrevo/brevo": "^3.0.1",
     "@prisma/adapter-pg": "^6.5.0",
     "@prisma/client": "^6.0.1",
     "@types/bcryptjs": "^2.4.6",

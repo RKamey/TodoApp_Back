@@ -9,6 +9,7 @@ import taskRoutes from 'features/tasks/routes/taskRoutes';
 import profilesRoutes from 'features/profiles/routes/profilesRoutes';
 import chatbotRoutes from 'features/chatbot/routes/chatbotRoutes';
 import weatherRoutes from 'features/weather/routes/weatherRoutes';
+import emailRoutes from 'features/email/routes/emailRoutes';
 // ===== Middlewares =====
 import { verifyToken, validateToken } from '@common/middleware/authMiddleware';
 
@@ -36,6 +37,7 @@ app.options('*', cors(options));
 // ----[ Public Routes ]----
 app.use('/health', healthRoutes);
 app.use('/auth', authRoutes);
+app.use('/email', emailRoutes);
 
 // ----[ Protected Routes ]----
 app.use(verifyToken);
