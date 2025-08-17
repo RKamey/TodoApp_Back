@@ -1,6 +1,8 @@
+import { generateToken } from "@common/utils/jwtHelper";
 import type { CreateUserDto, UpdateUserDto, User } from "../types/User";
 import { hash } from "bcryptjs";
 import { userRepository } from "features/users/repositories/userRepository";
+import { emailService } from "features/email/services/emailService";
 
 const getAllUsers = async () => {
   return await userRepository.getAllUsers();
@@ -22,10 +24,19 @@ const createUser = async (user: CreateUserDto) => {
   try {
     const hashedPassword = await hash(user.password, 10);
 
-    return await userRepository.createUser({
+
+    const createdUser = await userRepository.createUser({
       ...user,
       password: hashedPassword
     });
+
+    const ONE_HOUR = 60 * 60;
+
+    const verificationToken = generateToken({ user_id: createdUser.id }, ONE_HOUR);
+
+    const temporalName = createdUser.email.split("@")[0];
+
+    await emailService.sendVerificationEmail(createdUser.email, verificationToken, temporalName);
 
   } catch {
     throw new Error("Error creating user");

@@ -30,6 +30,10 @@ model User {
   name String?
   email String @unique
   password String
+  isEmailVerified Boolean @default(false)
+  emailVerifiedAt DateTime?
+  emailVerifyToken String?
+  emailVerifyExpires DateTime?
   isProfileComplete Boolean @default(false)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

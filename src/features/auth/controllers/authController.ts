@@ -14,8 +14,7 @@ const login = async (req: Request, res: Response) => {
 const register = async (req: Request, res: Response) => {
   try {
     const registerData = await authService.register(req.body);
-    console.log('this is the registerData, ', registerData);
-    return sendResponse(res, 200, "User registered succesfully!", registerData);
+    return sendResponse(res, 200, "User registered successfully!", registerData);
   }
   catch (error) {
     return sendResponse(res, 500, "An error occurred while registering the user", null, true);

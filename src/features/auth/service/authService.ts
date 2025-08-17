@@ -2,6 +2,7 @@ import { compare, hash } from "bcryptjs";
 import { generateToken } from "@common/utils/jwtHelper";
 import { userRepository } from "features/users/repositories/userRepository";
 import type { LoginDto, RegisterDto } from "../types/Auth";
+import { emailService } from "features/email/services/emailService";
 
 const login = async (user: LoginDto) => {
   const { email, password } = user;
@@ -31,12 +32,14 @@ const register = async (user: RegisterDto) => {
   const { email, password } = user;
 
   const existingUser = await userRepository.findUserByEmail(email);
+  console.log(existingUser)
 
   if (existingUser) {
     throw new Error('User already exists');
   }
 
   const hashedPassword = await hash(password, 10);
+  console.log(hashedPassword)
 
   const newUser = await userRepository.createUser({
     ...user,
@@ -44,16 +47,28 @@ const register = async (user: RegisterDto) => {
     name: user.name,
   });
 
-  const token = generateToken({
+  const ONE_HOUR = 60 * 60;
+  const verificationToken = generateToken({ user_id: newUser.id }, ONE_HOUR);
+
+  const temporalName = newUser.email.split("@")[0];
+  await emailService.sendVerificationEmail(newUser.email, verificationToken, temporalName);
+
+  const authToken = generateToken({
     id: newUser.id,
     email: newUser.email,
     name: newUser.name ?? '',
     role: newUser.profile ?? undefined,
   });
 
-  console.log(token);
-
-  return { token };
+  return { 
+    user: {
+      id: newUser.id,
+      email: newUser.email,
+      name: newUser.name ?? '',
+      role: newUser.profile ?? undefined,
+    },
+    token: authToken
+  };
 }
 
-export const authService = { login, register};
+export const authService = { login, register };

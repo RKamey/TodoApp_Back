@@ -12,6 +12,7 @@ import weatherRoutes from 'features/weather/routes/weatherRoutes';
 import emailRoutes from 'features/email/routes/emailRoutes';
 // ===== Middlewares =====
 import { verifyToken, validateToken } from '@common/middleware/authMiddleware';
+import path from 'path';
 
 // ----[ Configurations ]----
 const app = express();
@@ -31,6 +32,9 @@ const options: cors.CorsOptions = {
 app.use(cors(options));
 app.use(morgan('dev'));
 app.use(express.json());
+
+// ----[ Static Files ]----
+app.use('/assets', express.static(path.join(__dirname, './public/assets')));
 
 app.options('*', cors(options));
 

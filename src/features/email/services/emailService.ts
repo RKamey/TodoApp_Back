@@ -1,6 +1,8 @@
 import { SendSmtpEmail } from "@getbrevo/brevo";
 import type { SendMail } from "../interfaces/SendMail.interface";
 import { brevoClient } from "@config/brevo";
+import { envs } from "@config/envs";
+import { getVerificationTemplate } from "../utils/getVerificationTemplate";
 
 const sendEmail = async (email: SendMail) => {
   try {
@@ -13,7 +15,6 @@ const sendEmail = async (email: SendMail) => {
     message.textContent = textContent;
 
     const response = await brevoClient.sendTransacEmail(message);
-    console.log("Email sent successfully:", response);
 
     return response.body;
   } catch (error) {
@@ -21,4 +22,21 @@ const sendEmail = async (email: SendMail) => {
   }
 }
 
-export const emailService = { sendEmail };
+const sendVerificationEmail = async (to: string, token: string, userName?: string) => {
+  const verificationUrl = `${envs.FRONTEND_URL}/verify-email?token=${token}`;
+  const logoUrl = `${envs.BACKEND_URL}/assets/images/taskify-logo-email.png`;
+
+  return sendEmail({
+    sender: [{ email: envs.BREVO_SENDER_EMAIL!, name: envs.BREVO_SENDER_NAME! }],
+    to: [{ email: to, name: userName || '' }],
+    subject: "Taskify - Verify your email",
+    htmlContent: getVerificationTemplate({
+      verificationUrl,
+      userName,
+      logoUrl
+    }),
+    textContent: `Click the link below to verify your email:\n${verificationUrl}`
+  });
+}
+
+export const emailService = { sendEmail, sendVerificationEmail };

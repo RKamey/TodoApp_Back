@@ -5,7 +5,7 @@ const SECRET_KEY = process.env.SECRET_KEY as string;
 
 const ONE_DAY = 2 * 24 * 60 * 60;
 
-export const generateToken = (payload: TokenPayload, expiresIn: number = ONE_DAY) => {
+export const generateToken = (payload: TokenPayload | { user_id: number }, expiresIn: number = ONE_DAY) => {
   return jwt.sign(payload, SECRET_KEY, { expiresIn });
 }
 
