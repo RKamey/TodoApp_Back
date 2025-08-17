@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import morgan from 'morgan';
 // ===== Routes =====
@@ -7,12 +8,11 @@ import usersRoutes from 'features/users/routes/usersRoutes';
 import authRoutes from 'features/auth/routes/authRoutes';
 import taskRoutes from 'features/tasks/routes/taskRoutes';
 import profilesRoutes from 'features/profiles/routes/profilesRoutes';
-import chatbotRoutes from 'features/chatbot/routes/chatbotRoutes';
-import weatherRoutes from 'features/weather/routes/weatherRoutes';
-import emailRoutes from 'features/email/routes/emailRoutes';
+import chatbotRoutes from 'integrations/chatbot/routes/chatbotRoutes';
+import weatherRoutes from 'integrations/weather/routes/weatherRoutes';
+import emailRoutes from 'integrations/email/routes/emailRoutes';
 // ===== Middlewares =====
 import { verifyToken, validateToken } from '@common/middleware/authMiddleware';
-import path from 'path';
 
 // ----[ Configurations ]----
 const app = express();
