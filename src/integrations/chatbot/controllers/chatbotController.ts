@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { sendResponse } from "@common/utils/sendResponse";
-import { chatbotService } from "features/chatbot/services/chatbotService";
+import { chatbotService } from "../services/chatbotService";
 
 const askChatbot = async (req: Request, res: Response) => {
   const { message } = req.body;
