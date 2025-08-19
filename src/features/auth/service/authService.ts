@@ -73,15 +73,12 @@ const register = async (user: RegisterDto) => {
 }
 
 const verifyEmail = async (token: string): Promise<boolean> => {
-  console.log('Verifying email with token:', token);
   if (!token) return false;
 
   const user_id = getAttributeFromToken(token, 'user_id');
-  console.log('User ID from token:', user_id);
   if (!user_id) return false;
 
   const user = await userRepository.findByVerificationToken(Number(user_id), token);
-  console.log('User found:', user);
   if (!user) return false;
 
   if (user.emailVerifyExpires !== null && user.emailVerifyExpires < new Date()) return false;
