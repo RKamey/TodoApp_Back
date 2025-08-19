@@ -56,6 +56,43 @@ const findUserByEmail = async (email: string): Promise<User | null> => {
   })
 }
 
+const updateVerifyToken = async (id: number, token: string, expires: Date) => {
+  return await prisma.user.update({
+    where: { id },
+    data: {
+      emailVerifyToken: token,
+      emailVerifyExpires: expires
+    }
+  });
+}
+
+const findByVerificationToken = async (id: number, token: string) => {
+  return await prisma.user.findUnique({
+    where: { id, emailVerifyToken: token },
+  });
+}
+
+const verifyEmail = async (id: number, token: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id }
+  });
+
+  if (!user || user.emailVerifyToken !== token || !user.emailVerifyExpires || user.emailVerifyExpires < new Date()) {
+    return false;
+  }
+
+  await prisma.user.update({
+    where: { id },
+    data: {
+      isEmailVerified: true,
+      emailVerifyToken: null,
+      emailVerifyExpires: null
+    }
+  });
+
+  return true;
+}
+
 export const userRepository = {
   getAllUsers,
   getUserById,
@@ -65,4 +102,7 @@ export const userRepository = {
   updateUser,
   deleteUser,
   findUserByEmail,
+  updateVerifyToken,
+  verifyEmail,
+  findByVerificationToken
 };

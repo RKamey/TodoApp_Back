@@ -21,4 +21,20 @@ const register = async (req: Request, res: Response) => {
   }
 }
 
-export const authController = { login, register };
+const verifyEmail = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body;
+
+    if (!token || token.length === 0) return sendResponse(res, 400, "Token is required", null, true);
+
+    const isVerified = await authService.verifyEmail(token);
+    console.log(isVerified);
+    if (!isVerified) return sendResponse(res, 400, "Invalid token", null, true);
+
+    return sendResponse(res, 200, "Email verified successfully!", isVerified);
+  } catch (error) {
+    return sendResponse(res, 500, "An error occurred while verifying email", null, true);
+  }
+}
+
+export const authController = { login, register, verifyEmail };

@@ -1,5 +1,5 @@
 import { compare, hash } from "bcryptjs";
-import { generateToken } from "@common/utils/jwtHelper";
+import { generateToken, getAttributeFromToken } from "@common/utils/jwtHelper";
 import { userRepository } from "features/users/repositories/userRepository";
 import type { LoginDto, RegisterDto } from "../types/Auth";
 import { emailService } from "integrations/email/services/emailService";
@@ -32,23 +32,24 @@ const register = async (user: RegisterDto) => {
   const { email, password } = user;
 
   const existingUser = await userRepository.findUserByEmail(email);
-  console.log(existingUser)
 
   if (existingUser) {
     throw new Error('User already exists');
   }
 
   const hashedPassword = await hash(password, 10);
-  console.log(hashedPassword)
 
+  
   const newUser = await userRepository.createUser({
     ...user,
     password: hashedPassword,
     name: user.name,
   });
 
-  const ONE_HOUR = 60 * 60;
-  const verificationToken = generateToken({ user_id: newUser.id }, ONE_HOUR);
+  const ONE_DAY = 24 * 60 * 60;
+  const verificationToken = generateToken({ user_id: newUser.id });
+
+  await userRepository.updateVerifyToken(newUser.id, verificationToken, new Date(Date.now() + ONE_DAY * 1000));
 
   const temporalName = newUser.email.split("@")[0];
   await emailService.sendVerificationEmail(newUser.email, verificationToken, temporalName);
@@ -71,4 +72,21 @@ const register = async (user: RegisterDto) => {
   };
 }
 
-export const authService = { login, register };
+const verifyEmail = async (token: string): Promise<boolean> => {
+  console.log('Verifying email with token:', token);
+  if (!token) return false;
+
+  const user_id = getAttributeFromToken(token, 'user_id');
+  console.log('User ID from token:', user_id);
+  if (!user_id) return false;
+
+  const user = await userRepository.findByVerificationToken(Number(user_id), token);
+  console.log('User found:', user);
+  if (!user) return false;
+
+  if (user.emailVerifyExpires !== null && user.emailVerifyExpires < new Date()) return false;
+
+  return await userRepository.verifyEmail(user.id, token);
+}
+
+export const authService = { login, register, verifyEmail };
