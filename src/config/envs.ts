@@ -11,5 +11,6 @@ export const envs = {
   BREVO_SENDER_EMAIL: process.env.BREVO_SENDER_EMAIL,
   BREVO_SENDER_NAME: process.env.BREVO_SENDER_NAME,
   FRONTEND_URL: process.env.FRONTEND_URL,
-  BACKEND_URL: process.env.BACKEND_URL
+  BACKEND_URL: process.env.BACKEND_URL,
+  APP_LOGO: process.env.APP_LOGO // This is used in the email templates
 }

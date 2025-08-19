@@ -5,4 +5,5 @@ const router = Router();
 
 router.post("/send-email", emailController.sendEmail);
 
+
 export default router;

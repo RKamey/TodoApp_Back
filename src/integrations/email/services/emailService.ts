@@ -24,7 +24,7 @@ const sendEmail = async (email: SendMail) => {
 
 const sendVerificationEmail = async (to: string, token: string, userName?: string) => {
   const verificationUrl = `${envs.FRONTEND_URL}/verify-email?token=${token}`;
-  const logoUrl = `${envs.BACKEND_URL}/assets/images/taskify-logo-email.png`;
+  const logoUrl = envs.APP_LOGO;
 
   return sendEmail({
     sender: [{ email: envs.BREVO_SENDER_EMAIL!, name: envs.BREVO_SENDER_NAME! }],

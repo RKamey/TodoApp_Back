@@ -2,7 +2,7 @@ import { compare, hash } from "bcryptjs";
 import { generateToken } from "@common/utils/jwtHelper";
 import { userRepository } from "features/users/repositories/userRepository";
 import type { LoginDto, RegisterDto } from "../types/Auth";
-import { emailService } from "features/email/services/emailService";
+import { emailService } from "integrations/email/services/emailService";
 
 const login = async (user: LoginDto) => {
   const { email, password } = user;

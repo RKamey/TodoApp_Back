@@ -2,7 +2,7 @@ import { generateToken } from "@common/utils/jwtHelper";
 import type { CreateUserDto, UpdateUserDto, User } from "../types/User";
 import { hash } from "bcryptjs";
 import { userRepository } from "features/users/repositories/userRepository";
-import { emailService } from "features/email/services/emailService";
+import { emailService } from "integrations/email/services/emailService";
 
 const getAllUsers = async () => {
   return await userRepository.getAllUsers();
