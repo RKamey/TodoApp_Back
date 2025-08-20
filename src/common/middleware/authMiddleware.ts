@@ -5,6 +5,10 @@ import jwt from "jsonwebtoken";
 const SECRET_KEY = process.env.SECRET_KEY as string;
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+  if (req.method === "OPTIONS") {
+    return next();
+  }
+  
   const authHeader = req.header("Authorization");
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {

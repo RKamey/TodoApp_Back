@@ -30,6 +30,7 @@ const options: cors.CorsOptions = {
 
 // ----[ Middlewares ]----
 app.use(cors(options));
+app.options('*', cors(options));
 app.use(morgan('dev'));
 app.use(express.json());
 
