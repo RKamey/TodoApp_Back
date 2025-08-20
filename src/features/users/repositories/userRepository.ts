@@ -85,6 +85,7 @@ const verifyEmail = async (id: number, token: string) => {
     where: { id },
     data: {
       isEmailVerified: true,
+      emailVerifiedAt: new Date(),
       emailVerifyToken: null,
       emailVerifyExpires: null
     }
