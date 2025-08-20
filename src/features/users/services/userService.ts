@@ -38,6 +38,12 @@ const createUser = async (user: CreateUserDto) => {
 
     await emailService.sendVerificationEmail(createdUser.email, verificationToken, temporalName);
 
+    if (!createdUser) {
+      throw new Error("Error creating user");
+    }
+
+    return createdUser;
+
   } catch {
     throw new Error("Error creating user");
   }
